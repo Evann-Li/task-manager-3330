@@ -8,12 +8,14 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
+import { api } from "@/lib/api"
+
 function App() {
   const [totalTime, setTotalTime] = useState(0)
 
   useEffect(() => {
     async function fetchTotal() {
-      const res = await fetch("/api/tasks/total-time")
+      const res = await api.tasks["total-time"].$get()
       const data = await res.json()
       setTotalTime(data.total)
     }
