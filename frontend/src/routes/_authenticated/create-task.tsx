@@ -15,12 +15,11 @@ function CreateTask() {
   const form = useForm({
     defaultValues: {
       title: '',
-      time: 0,
+      time: "0",
       description: '',
     },
     onSubmit: async ({ value }) => {
       // Do something with form data
-      await new Promise((r) => setTimeout(r, 3000))
 
       const res = await api.tasks.$post({ json: value })
       if (!res.ok) {
@@ -76,7 +75,7 @@ function CreateTask() {
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   type="number"
-                  onChange={(e) => field.handleChange(+e.target.value)}
+                  onChange={(e) => field.handleChange(e.target.value)}
                 />
                 {field.state.meta.isTouched &&
                 field.state.meta.errors.length ? (
