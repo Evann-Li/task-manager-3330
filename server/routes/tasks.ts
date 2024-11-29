@@ -1,24 +1,13 @@
 import { Hono } from "hono"
 import { zValidator } from "@hono/zod-validator"
-import { z } from "zod"
 
 import { getUser } from "../kinde"
 
 import { db } from "../db"
-import { tasks as taskTable } from "../db/schema/tasks"
+import { tasks as taskTable, insertTasksSchema } from "../db/schema/tasks"
 import { eq, desc, sum, and } from "drizzle-orm"
 
-
-const taskSchema = z.object({
-    id: z.number().int().positive().min(1),
-    title: z.string(),
-    description: z.string(),
-    time: z.string()
-})
-
-type Task = z.infer<typeof taskSchema>
-
-const createPostSchema = taskSchema.omit({id: true})
+import { createTaskSchema } from "../sharedTypes"
 
 
 export const tasksRoute = new Hono()
@@ -28,14 +17,16 @@ export const tasksRoute = new Hono()
     const tasks = await db.select().from(taskTable).where(eq(taskTable.userId, user.id)).orderBy(desc(taskTable.createdAt)).limit(100)
 ;    return c.json({ tasks: tasks})
 })
-.post("/", getUser, zValidator("json", createPostSchema), async (c) => {
+.post("/", getUser, zValidator("json", createTaskSchema), async (c) => {
     const task = await c.req.valid("json")
     const user = c.var.user
         
-    const result = await db.insert(taskTable).values({
+    const validatedTask = insertTasksSchema.parse({
         ...task,
         userId: user.id
-    }).returning()
+    })
+
+    const result = await db.insert(taskTable).values(validatedTask).returning()
     
     
     c.status(201)

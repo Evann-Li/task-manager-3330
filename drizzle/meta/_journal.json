@@ -15,6 +15,13 @@
       "when": 1732849708816,
       "tag": "0001_superb_terror",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1732853952356,
+      "tag": "0002_minor_celestials",
+      "breakpoints": true
     }
   ]
 }
