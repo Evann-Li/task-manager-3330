@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
-import { Trash } from 'lucide-react'
+import { Trash, CheckCircle } from 'lucide-react'
 import { toast } from "sonner";
 
 export const Route = createFileRoute('/_authenticated/tasks')({
@@ -50,8 +50,9 @@ function Tasks() {
             <TableHead>Title</TableHead>
             <TableHead>Description</TableHead>
             <TableHead>Time</TableHead>
+            <TableHead>Priority</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead>Delete</TableHead>
+    
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -80,6 +81,7 @@ function Tasks() {
                   <TableCell>{task.title}</TableCell>
                   <TableCell>{task.description}</TableCell>
                   <TableCell>{task.time}</TableCell>
+                  <TableCell>{task.priority}</TableCell>
                   <TableCell>{task.date}</TableCell>
                   <TableCell>
                     <TaskDeleteButton id={task.id}/>
@@ -93,7 +95,7 @@ function Tasks() {
   )
 }
 
-function TaskDeleteButton({id}: {id: number}){
+function TaskDeleteButton({id}: {id: number}) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: deleteTask,
@@ -120,7 +122,7 @@ function TaskDeleteButton({id}: {id: number}){
   return (
     <Button disabled={mutation.isPending} onClick={() => mutation.mutate({ id })} variant="outline" size="icon">
         {mutation.isPending ? "...": 
-        <Trash />}
+        <CheckCircle />}
     </Button>
   );
 }

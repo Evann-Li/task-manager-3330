@@ -49,9 +49,9 @@ function Index() {
     <Card className="w-[350px] m-auto">
       <CardHeader>
         <CardTitle>Total Time</CardTitle>
-        <CardDescription>Total Time Spent</CardDescription>
+        <CardDescription>Total Time Left On Tasks</CardDescription>
       </CardHeader>
-      <CardContent>{isPending ? '...' : data.total}</CardContent>
+      <CardContent>{isPending ? '...' : data.total} Hours</CardContent>
     </Card>
   )
 }
